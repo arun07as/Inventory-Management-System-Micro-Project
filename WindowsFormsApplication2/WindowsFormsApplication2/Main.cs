@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
-namespace WindowsFormsApplication2
+namespace Inventory_Management_System
 {
     public partial class Main : Form
     {
@@ -15,10 +16,23 @@ namespace WindowsFormsApplication2
         {
             InitializeComponent();
             this.FormClosing += Main_FormClosing;
+            var sqlQuery = "";
+            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
+            con.Open();
+            sqlQuery = @"DELETE FROM [Sales]";
+            SqlCommand cmd = new SqlCommand(sqlQuery, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-    
+            var sqlQuery = "";
+            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
+            con.Open();
+            sqlQuery = @"DELETE FROM [Sales]";
+            SqlCommand cmd = new SqlCommand(sqlQuery, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
             Application.Exit();
         }
         private void Main_Load(object sender, EventArgs e)
@@ -41,6 +55,20 @@ namespace WindowsFormsApplication2
             Products pro = new Products();
             pro.MdiParent = this;
             pro.Show();
+        }
+
+        private void stockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Customer cust = new Customer();
+            cust.MdiParent = this;
+            cust.Show();
+        }
+
+        private void orderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Order o = new Order();
+            o.MdiParent = this;
+            o.Show();
         }
     }
 }

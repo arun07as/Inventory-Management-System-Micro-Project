@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication2
+﻿namespace Inventory_Management_System
 {
     
     partial class Login_Form
@@ -38,7 +38,6 @@
             this.Username_textBox = new System.Windows.Forms.TextBox();
             this.Username_label = new System.Windows.Forms.Label();
             this.login_label = new System.Windows.Forms.Label();
-            this.pageSetupDialog1 = new System.Windows.Forms.PageSetupDialog();
             this.login_panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -177,7 +176,6 @@
         private System.Windows.Forms.Label Username_label;
         private System.Windows.Forms.TextBox Password_textBox;
         private System.Windows.Forms.Button Login_button;
-        private System.Windows.Forms.PageSetupDialog pageSetupDialog1;
         private System.Windows.Forms.Button Exit_button;
 
     }

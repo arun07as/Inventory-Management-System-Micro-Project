@@ -10,29 +10,27 @@ using System.Data.SqlClient;
 
 namespace Inventory_Management_System
 {
-    public partial class Products : Form
+
+    public partial class Search_Product : Form
     {
-        public Products()
+        Order o;
+        public Search_Product()
         {
             InitializeComponent();
-        }
 
+        }
+        public Search_Product(Order or)
+        {
+            InitializeComponent();
+            o = or;
+        }
         private void Products_Load(object sender, EventArgs e)
         {
             LoadData();
         }
-
-        private void Add_Button_Click(object sender, EventArgs e)
-        {
-            New_Item n = new New_Item(this);
-            n.Show();
-            LoadData();
-
-        }
-
         private bool IfProductExists(SqlConnection con, string productCode)
         {
-            SqlDataAdapter sda = new SqlDataAdapter("Select 1 From [Products] WHERE [ProductCode] = '" + productCode +"'", con);
+            SqlDataAdapter sda = new SqlDataAdapter("Select 1 From [Products] WHERE [ProductCode] = '" + productCode + "'", con);
             DataTable dt = new DataTable();
             sda.Fill(dt);
             if (dt.Rows.Count > 0)
@@ -60,6 +58,16 @@ namespace Inventory_Management_System
             else
                 return false;
         }
+        private bool IfProductExists4(SqlConnection con, string productCode)
+        {
+            SqlDataAdapter sda = new SqlDataAdapter("Select 1 From [Sales] WHERE [ProductCode] = '" + productCode + "'", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
         public void LoadData()
         {
             SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
@@ -77,40 +85,6 @@ namespace Inventory_Management_System
             }
         }
 
-        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
-            {
-                ProductCode_textbox.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-                ProductName_textbox.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
-                ProductRate_textbox.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
-                ProductQuantity_textbox.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
-            }
-        }
-
-        private void Delete_Button_Click(object sender, EventArgs e)
-        {
-            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
-            if (IfProductExists(con, ProductCode_textbox.Text))
-            {
-                if (MessageBox.Show("Are you sure you want to Delete this?", "Delete Product", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand(@"DELETE [Products] WHERE [ProductCode] = '" + ProductCode_textbox.Text + "'", con);
-                    cmd.ExecuteNonQuery();
-                    ProductCode_textbox.Clear();
-                    ProductName_textbox.Clear();
-                    ProductQuantity_textbox.Clear();
-                    ProductRate_textbox.Clear();
-                    con.Close();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please Select a Product....!","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            LoadData();
-        }
 
         private void Search_button_Click(object sender, EventArgs e)
         {
@@ -173,39 +147,49 @@ namespace Inventory_Management_System
             LoadData();
         }
 
-        private void Edit_button_Click(object sender, EventArgs e)
+        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
-            if(IfProductExists(con,ProductCode_textbox.Text))
+            if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
             {
-                SqlDataAdapter sda = new SqlDataAdapter("Select * From [Products] WHERE [ProductCode] = '" + ProductCode_textbox.Text +"'", con);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                foreach (DataRow item in dt.Rows)
-                {
-                    ProductCode_textbox.Text = item["ProductCode"].ToString();
-                    ProductName_textbox.Text = item["ProductName"].ToString();
-                    ProductQuantity_textbox.Text = item["ProductQuantity"].ToString();
-                    ProductRate_textbox.Text = item["ProductRate"].ToString();
-                }
-                Edit_Item edit = new Edit_Item(this,ProductCode_textbox.Text, ProductName_textbox.Text, ProductRate_textbox.Text, ProductQuantity_textbox.Text);
-                edit.Show();
+                ProductCode_textbox.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                ProductName_textbox.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
+                ProductRate_textbox.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
+                ProductQuantity_textbox.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            }
+        }
 
-                LoadData();
+        private void Select_button_Click(object sender, EventArgs e)
+        {
+            var sqlQuery = "";
+            if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
+            {
+                SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
+                con.Open();
+                if (IfProductExists4(con, ProductCode_textbox.Text))
+                {
+                    MessageBox.Show("Product already in Order List. Please Edit in Order List", "Duplicate entry", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    sqlQuery = @"
+                    INSERT INTO [Sales](
+                    [ProductCode],
+                    [ProductName],
+                    [ProductRate])
+                    VALUES(
+                    '" + ProductCode_textbox.Text + "','" + ProductName_textbox.Text + "','" + ProductRate_textbox.Text + "')";
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    o.LoadData();
+                    this.Close();
+                }
             }
             else
             {
-                MessageBox.Show("Please Select the Product to Edit", "No Product Selected", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Please Select a Product","No Product Selected",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
-
 
     }
 }

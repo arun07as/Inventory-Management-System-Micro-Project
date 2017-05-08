@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication2
+﻿namespace Inventory_Management_System
 {
     partial class Exit_confirm_form
     {

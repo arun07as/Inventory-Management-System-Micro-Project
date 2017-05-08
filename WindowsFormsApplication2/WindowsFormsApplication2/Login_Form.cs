@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-namespace WindowsFormsApplication2
+namespace Inventory_Management_System
 {
 
     public partial class Login_Form : Form
