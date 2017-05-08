@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CustomerName_textbox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.CustomerID_textbox = new System.Windows.Forms.TextBox();
@@ -40,11 +45,6 @@
             this.SearchProduct_button = new System.Windows.Forms.Button();
             this.SearchCustomer_button = new System.Windows.Forms.Button();
             this.Delete_button = new System.Windows.Forms.Button();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -66,6 +66,40 @@
             this.dataGridView1.TabIndex = 12;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Product Code";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column1.Width = 120;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.HeaderText = "Product Name";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Quantity";
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 120;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Rate";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Amount";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
             // CustomerName_textbox
             // 
@@ -172,39 +206,7 @@
             this.Delete_button.TabIndex = 33;
             this.Delete_button.Text = "Delete";
             this.Delete_button.UseVisualStyleBackColor = true;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Product Code";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column1.Width = 120;
-            // 
-            // Column2
-            // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Product Name";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Quantity";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 120;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Rate";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Amount";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
+            this.Delete_button.Click += new System.EventHandler(this.Delete_button_Click);
             // 
             // label3
             // 

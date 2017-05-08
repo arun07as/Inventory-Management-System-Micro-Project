@@ -17,6 +17,16 @@ namespace Inventory_Management_System
         {
             InitializeComponent();
         }
+        private bool IfProductExists(SqlConnection con, string productCode)
+        {
+            SqlDataAdapter sda = new SqlDataAdapter("Select 1 From [Sales] WHERE [ProductCode] = '" + productCode + "'", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
         public void LoadData()
         {
             amount = 0;
@@ -96,18 +106,17 @@ namespace Inventory_Management_System
                 SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
                 con.Open();
                 int k = dataGridView1.Rows.Count - 1;
-               /* if (k > -1)*/
+                if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
                 {
-                    //dataGridView1.Rows[k].Cells[4].Value = /*Convert.ToString*/(Convert.ToInt32(dataGridView1.Rows[k].Cells[3].Value) * Convert.ToInt32(dataGridView1.Rows[k].Cells[2].Value));
                     int quantity, rate, code;
                     if (int.TryParse(dataGridView1.Rows[e.RowIndex].Cells["Column3"].Value.ToString(), out quantity) && int.TryParse(dataGridView1.Rows[e.RowIndex].Cells["Column4"].Value.ToString(), out rate))
                     {
-                        int.TryParse(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(),out code);
+                        int.TryParse(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(), out code);
                         int price = quantity * rate;
                         dataGridView1.Rows[e.RowIndex].Cells["Column5"].Value = price.ToString();
                         var sqlQuery = "";
 
-                        sqlQuery = @"UPDATE [Sales] SET [ProductQuantity] = '" + quantity + "', [Amount] = '" + price + "' WHERE [ProductCode] = '" +code+ "'  ";
+                        sqlQuery = @"UPDATE [Sales] SET [ProductQuantity] = '" + quantity + "', [Amount] = '" + price + "' WHERE [ProductCode] = '" + code + "'  ";
                         SqlCommand cmd = new SqlCommand(sqlQuery, con);
                         cmd.ExecuteNonQuery();
                     }
@@ -115,9 +124,39 @@ namespace Inventory_Management_System
                     {
                         MessageBox.Show("Error");
                     }
+                    con.Close();
+                    LoadData();
                 }
-                con.Close();
-                LoadData();
+            }
+        }
+        private void Delete_button_Click(object sender, EventArgs e)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
+            if (dataGridView1.SelectedRows.Count > 0 && dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
+            {
+                string selectedUser = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                if (IfProductExists(con, selectedUser))
+                {
+                    if (MessageBox.Show("Are you sure you want to Delete this?", "Delete Product", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand(@"DELETE [Sales] WHERE [ProductCode] = '" + selectedUser + "'", con);
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please Select a Product....!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            LoadData();
+        }
+
+        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
+            {
             }
         }
     }
