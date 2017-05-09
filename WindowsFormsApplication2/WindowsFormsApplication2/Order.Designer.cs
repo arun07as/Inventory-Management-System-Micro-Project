@@ -197,6 +197,7 @@
             this.SearchCustomer_button.TabIndex = 32;
             this.SearchCustomer_button.Text = "Search Customer";
             this.SearchCustomer_button.UseVisualStyleBackColor = true;
+            this.SearchCustomer_button.Click += new System.EventHandler(this.SearchCustomer_button_Click);
             // 
             // Delete_button
             // 

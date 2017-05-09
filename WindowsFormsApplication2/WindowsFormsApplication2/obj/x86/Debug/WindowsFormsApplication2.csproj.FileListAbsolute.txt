@@ -16,3 +16,8 @@ d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\Wi
 d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.New_Customer.resources
 d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.Order.resources
 d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.Search_Product.resources
+d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.Search_Customer.resources
+d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\bin\Debug\Inventory_Management_System.exe.manifest
+d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\bin\Debug\Inventory_Management_System.application
+d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.exe.manifest
+d:\users\admin\documents\visual studio 2010\Projects\WindowsFormsApplication2\WindowsFormsApplication2\obj\x86\Debug\Inventory_Management_System.application

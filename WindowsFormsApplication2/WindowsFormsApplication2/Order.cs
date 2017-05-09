@@ -73,12 +73,59 @@ namespace Inventory_Management_System
 
         private void Save_Button_Click_1(object sender, EventArgs e)
         {
-            var sqlQuery = "";
             SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;AttachDbFilename=D:\Users\Admin\Documents\Users.mdf;Integrated Security=True;Connect Timeout=30;User Instance=True;");
             con.Open();
-            sqlQuery = @"DELETE FROM [Sales]";
-            SqlCommand cmd = new SqlCommand(sqlQuery, con);
-            cmd.ExecuteNonQuery();
+            int k,i;
+            bool flag = true;
+            for (i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            {
+                int n;
+                int.TryParse(dataGridView1.Rows[i].Cells[2].Value.ToString(), out n);
+                if (n == 0 || n == null)
+                {
+                    MessageBox.Show("Please Enter Quantity for " + dataGridView1.Rows[i].Cells[1].ToString(), "Invalid Quantity", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    for (k = 0; k < dataGridView1.Rows.Count - 1; k++)
+                    {
+                        SqlDataAdapter sda = new SqlDataAdapter("Select * From [Products] ORDER BY [ProductCode]", con);
+                        DataTable dt = new DataTable();
+                        sda.Fill(dt);
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            int code, code2, qty, qty2;
+                            int.TryParse(dataGridView1.Rows[k].Cells["Column1"].Value.ToString(), out code);
+                            int.TryParse(item["ProductCode"].ToString(), out code2);
+                            if (code == code2)
+                            {
+                                int.TryParse(item["ProductQuantity"].ToString(), out qty2);
+                                int.TryParse(dataGridView1.Rows[k].Cells[2].Value.ToString(), out qty);
+                                if (qty > qty2)
+                                {
+                                    MessageBox.Show("Not enough Stock for product at row " + (k + 1), "Stock not enough", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (flag)
+                    {
+                        var sqlq = @"UPDATE [Products] SET [ProductQuantity] = P.[ProductQuantity] - S.[ProductQuantity] FROM [Products] P Inner Join [Sales] as S on P.[ProductCode]=S.[ProductCode]";
+                        SqlCommand cm = new SqlCommand(sqlq, con);
+                        cm.ExecuteNonQuery();
+                        var sqlQuery = "";
+                        sqlQuery = @"DELETE FROM [Sales]";
+                        SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
             con.Close();
             LoadData();
         }
@@ -157,6 +204,17 @@ namespace Inventory_Management_System
         {
             if (dataGridView1.SelectedRows[0].Cells[0].Value != null && dataGridView1.SelectedRows[0].Cells[1].Value != null && dataGridView1.SelectedRows[0].Cells[2].Value != null && dataGridView1.SelectedRows[0].Cells[3].Value != null)
             {
+            }
+        }
+
+        private void SearchCustomer_button_Click(object sender, EventArgs e)
+        {
+            Search_Customer cu = new Search_Customer();
+            cu.ShowDialog();
+            if (cu.flag)
+            {
+                CustomerID_textbox.Text = cu.id.ToString();
+                CustomerName_textbox.Text = cu.name.ToString();
             }
         }
     }
